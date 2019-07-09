@@ -706,8 +706,8 @@ public class RNSendIntentModule extends ReactContextBaseJavaModule {
             Log.w(TAG, "Could not open SMS app", e);
         
             // Inform user
-            Toast.this.reactContext.makeText(
-                this,
+            Toast.makeText(
+                this.reactContext,
                 "Your SMS app could not be opened. Please open it manually.",
                 Toast.LENGTH_LONG
             ).show();
