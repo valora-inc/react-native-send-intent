@@ -11,8 +11,11 @@ import android.util.Log;
 import android.net.Uri;
 import android.os.Build;
 import android.support.v4.content.FileProvider;
+import android.provider.Telephony;
 import android.telephony.TelephonyManager;
 import android.content.Context;
+import android.provider.Settings;
+import android.widget.Toast;
 
 import java.util.Map;
 import java.util.HashMap;
@@ -683,4 +686,33 @@ public class RNSendIntentModule extends ReactContextBaseJavaModule {
       }
     }
 
+    @ReactMethod
+    public void openSMSApp() {
+        String defaultSmsPackage = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT
+        ? Telephony.Sms.getDefaultSmsPackage(this.reactContext)
+        : Settings.Secure.getString(this.reactContextgetContentResolver(), "sms_default_application");
+    
+        Intent smsIntent = this.reactContext.getPackageManager().getLaunchIntentForPackage(defaultSmsPackage);
+        
+        if (smsIntent == null) {
+            smsIntent = new Intent(Intent.ACTION_MAIN);
+            smsIntent.addCategory(Intent.CATEGORY_DEFAULT);
+            smsIntent.setType("vnd.android-dir/mms-sms");
+        }
+        
+        try {
+            this.reactContext.startActivity(smsIntent);
+        } catch (Exception e) {
+            Log.w(TAG, "Could not open SMS app", e);
+        
+            // Inform user
+            Toast.makeText(
+                this,
+                "Your SMS app could not be opened. Please open it manually.",
+                Toast.LENGTH_LONG
+            ).show();
+        }
+    }
+
+    
 }
