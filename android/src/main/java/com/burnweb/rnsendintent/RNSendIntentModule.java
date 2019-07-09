@@ -690,7 +690,7 @@ public class RNSendIntentModule extends ReactContextBaseJavaModule {
     public void openSMSApp() {
         String defaultSmsPackage = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT
         ? Telephony.Sms.getDefaultSmsPackage(this.reactContext)
-        : Settings.Secure.getString(this.reactContextgetContentResolver(), "sms_default_application");
+        : Settings.Secure.getString(this.reactContext.getContentResolver(), "sms_default_application");
     
         Intent smsIntent = this.reactContext.getPackageManager().getLaunchIntentForPackage(defaultSmsPackage);
         
@@ -706,7 +706,7 @@ public class RNSendIntentModule extends ReactContextBaseJavaModule {
             Log.w(TAG, "Could not open SMS app", e);
         
             // Inform user
-            Toast.makeText(
+            Toast.this.reactContext.makeText(
                 this,
                 "Your SMS app could not be opened. Please open it manually.",
                 Toast.LENGTH_LONG
