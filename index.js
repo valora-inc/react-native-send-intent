@@ -93,6 +93,9 @@ var SendIntentAndroid = {
     },
     openEmailApp() {
         RNSendIntentAndroid.openEmailApp();
+    },
+    openSMSApp() {
+        RNSendIntentAndroid.openSMSApp();
     }
 };
 
